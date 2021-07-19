@@ -1,0 +1,109 @@
+openapi: 3.0.2
+info:
+  title: Demo REST API
+  description: REST controllers API
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/api
+    description: Localhost deployment
+  - url: https://dev.mycompany.com/api
+    description: Development environment
+  - url: https://www.mycompany.com/api
+    description: Production environment
+tags:
+  - name: users
+    description: Users management API. Allows to register and authenticate users
+paths:
+  /users:
+    get:
+      operationId: findUser
+      summary: Finds a user according to research criteria
+      tags:
+        - users
+      parameters:
+        - in: query
+          name: code
+          schema:
+            type: string
+            pattern: ^[0-9A-F]{16}$
+          description: Identifying code
+      responses:
+        200: # OK
+          description: User found for the given criteria.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        400: # Bad request
+          description: Invalid request structure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        404: # Not found
+          description: No user found for the given criteria
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500: # Internal Server Error
+          description: A problem occurred while looking for the user by using the given criteria
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    User:
+      type: object
+      required:
+        - email
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: byte
+        firstName:
+          type: string
+          pattern: ^[A-Za-z0-9äáàéèëêïíôóöòúûùüÄÁÀÉÈËÊÏÍÔÓÒÚÛÙÜçÇñÑ\'\-]{1,255}$
+        surname:
+          type: string
+          pattern: ^[A-Za-z0-9äáàéèëêïíôóöòúûùüÄÁÀÉÈËÊÏÍÔÓÒÚÛÙÜçÇñÑ\'\-]{1,255}$
+        phoneNumber:
+          type: string
+          pattern: ^[+]?[0-9\-\(\) ]{6,16}$
+    Role:
+      type: object
+      properties:
+        id:
+          type: integer
+        code:
+          type: string
+          pattern: ^[A-Z]{2}$
+        name:
+          type: string
+      required:
+        - id
+        - name
+    ErrorResponse:
+      type: object
+      required:
+        - timestamp
+        - error
+        - message
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        status:
+          type: integer
+        error:
+          type: string
+        message:
+          type: string
+        path:
+          type: string
+          format: uri

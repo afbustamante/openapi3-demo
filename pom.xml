@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>net.andresbustamante</groupId>
+  <artifactId>openapi3-demo</artifactId>
+  <packaging>pom</packaging>
+  <version>1.0.0-SNAPSHOT</version>
+
+  <modules>
+    <module>openapi3-demo-api</module>
+    <module>openapi3-demo-cxf</module>
+    <module>openapi3-demo-spring</module>
+    <module>openapi3-demo-jaxrs</module>
+  </modules>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
+    <java.version>11</java.version>
+    <compiler.source>11</compiler.source>
+    <compiler.target>11</compiler.target>
+
+    <!-- Plugins -->
+    <maven-clean-plugin.version>3.0.0</maven-clean-plugin.version>
+    <maven-source-plugin.version>3.0.1</maven-source-plugin.version>
+    <maven-resources-plugin.version>3.0.2</maven-resources-plugin.version>
+    <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
+    <maven-dependency-plugin.version>2.10</maven-dependency-plugin.version>
+    <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
+    <swagger-codegen-maven-plugin.version>3.0.23</swagger-codegen-maven-plugin.version>
+
+    <!-- Swagger / OpenAPI -->
+    <swagger-annotations.version>2.1.5</swagger-annotations.version>
+
+    <!-- Java EE / javax -->
+    <javax.servlet-api.version>4.0.1</javax.servlet-api.version>
+    <jakarta.annotation-api.version>1.3.5</jakarta.annotation-api.version>
+    <jakarta.validation-api.version>2.0.2</jakarta.validation-api.version>
+    <jakarta.xml.bind-api.version>2.3.3</jakarta.xml.bind-api.version>
+    <jakarta.ws.rs-api.version>2.1.6</jakarta.ws.rs-api.version>
+
+    <!-- Spring Framework -->
+    <spring.version>5.2.12.RELEASE</spring.version>
+    <jackson-databind.version>2.11.4</jackson-databind.version>
+    <jackson-datatype-jsr310.version>2.11.4</jackson-datatype-jsr310.version>
+
+    <!-- Apache CXF -->
+    <cxf.version>3.3.11</cxf.version>
+
+    <!-- JAX-RS -->
+
+    <!-- Other libs -->
+    <slf4j-api.version>1.7.25</slf4j-api.version>
+    <logback.version>1.2.3</logback.version>
+  </properties>
+
+  <scm>
+    <connection>scm:git:git@github.com:afbustamante/openapi3-demo.git</connection>
+    <developerConnection>scm:git:https://github.com/afbustamante/openapi3-demo.git</developerConnection>
+    <url>https://github.com/afbustamante/openapi3-demo</url>
+    <tag>HEAD</tag>
+  </scm>
+
+  <dependencyManagement>
+    <dependencies>
+      <!-- Swagger / OpenAPI -->
+      <dependency>
+        <groupId>io.swagger.core.v3</groupId>
+        <artifactId>swagger-annotations</artifactId>
+        <version>${swagger-annotations.version}</version>
+      </dependency>
+
+      <!-- Java EE / javax -->
+      <dependency>
+        <groupId>javax.servlet</groupId>
+        <artifactId>javax.servlet-api</artifactId>
+        <version>${javax.servlet-api.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>jakarta.annotation</groupId>
+        <artifactId>jakarta.annotation-api</artifactId>
+        <version>${jakarta.annotation-api.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>jakarta.validation</groupId>
+        <artifactId>jakarta.validation-api</artifactId>
+        <version>${jakarta.validation-api.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>jakarta.ws.rs</groupId>
+        <artifactId>jakarta.ws.rs-api</artifactId>
+        <version>${jakarta.ws.rs-api.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>jakarta.xml.bind</groupId>
+        <artifactId>jakarta.xml.bind-api</artifactId>
+        <version>${jakarta.xml.bind-api.version}</version>
+      </dependency>
+
+      <!-- Spring Framework -->
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-core</artifactId>
+        <version>${spring.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-context</artifactId>
+        <version>${spring.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-web</artifactId>
+        <version>${spring.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-webmvc</artifactId>
+        <version>${spring.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-core</artifactId>
+        <version>${jackson-databind.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>${jackson-databind.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.datatype</groupId>
+        <artifactId>jackson-datatype-jsr310</artifactId>
+        <version>${jackson-datatype-jsr310.version}</version>
+      </dependency>
+
+      <!-- Apache CXF -->
+      <dependency>
+        <groupId>org.apache.cxf</groupId>
+        <artifactId>cxf-core</artifactId>
+        <version>${cxf.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.cxf</groupId>
+        <artifactId>cxf-rt-transports-http</artifactId>
+        <version>${cxf.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.cxf</groupId>
+        <artifactId>cxf-rt-frontend-jaxws</artifactId>
+        <version>${cxf.version}</version>
+        <exclusions>
+          <exclusion>
+            <artifactId>jaxb-core</artifactId>
+            <groupId>com.sun.xml.bind</groupId>
+          </exclusion>
+          <exclusion>
+            <artifactId>jaxb-impl</artifactId>
+            <groupId>com.sun.xml.bind</groupId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.cxf</groupId>
+        <artifactId>cxf-rt-frontend-jaxrs</artifactId>
+        <version>${cxf.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.cxf</groupId>
+        <artifactId>cxf-rt-rs-service-description</artifactId>
+        <version>${cxf.version}</version>
+      </dependency>
+
+      <!-- Logging -->
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>${slf4j-api.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>ch.qos.logback</groupId>
+        <artifactId>logback-classic</artifactId>
+        <version>${logback.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-clean-plugin</artifactId>
+          <version>${maven-clean-plugin.version}</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-source-plugin</artifactId>
+          <version>${maven-source-plugin.version}</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>${maven-compiler-plugin.version}</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>${maven-jar-plugin.version}</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>${maven-resources-plugin.version}</version>
+          <configuration>
+            <encoding>${project.build.sourceEncoding}</encoding>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-dependency-plugin</artifactId>
+          <version>${maven-dependency-plugin.version}</version>
+        </plugin>
+
+        <plugin>
+          <groupId>io.swagger.codegen.v3</groupId>
+          <artifactId>swagger-codegen-maven-plugin</artifactId>
+          <version>${swagger-codegen-maven-plugin.version}</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+</project>
