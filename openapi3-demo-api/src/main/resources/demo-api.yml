@@ -4,15 +4,17 @@ info:
   description: REST controllers API
   version: 1.0.0
 servers:
-  - url: http://localhost:8080/api
+  - url: 'http://localhost:8080/api'
     description: Localhost deployment
-  - url: https://dev.mycompany.com/api
+  - url: 'https://dev.mycompany.com/api'
     description: Development environment
-  - url: https://www.mycompany.com/api
+  - url: 'https://www.mycompany.com/api'
     description: Production environment
 tags:
   - name: users
     description: Users management API. Allows to register and authenticate users
+  - name: roles
+    description: Roles
 paths:
   /users:
     get:
@@ -25,34 +27,69 @@ paths:
           name: code
           schema:
             type: string
-            pattern: ^[0-9A-F]{16}$
+            pattern: '^[0-9A-F]{16}$'
           description: Identifying code
+          example:
+            - ABC123
       responses:
-        200: # OK
+        '200':
           description: User found for the given criteria.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
-        400: # Bad request
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        '400':
           description: Invalid request structure
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-        404: # Not found
+        '404':
           description: No user found for the given criteria
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-        500: # Internal Server Error
+        '500':
           description: A problem occurred while looking for the user by using the given criteria
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-
+    post:
+      summary: Creates a user
+      description: Creates a user
+      tags:
+        - users
+      operationId: createUser
+      responses:
+        '201':
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/User'
+  /roles:
+    get:
+      summary: Searches for roles
+      description: Searches for roles
+      tags:
+        - roles
+      operationId: findRoles
+      responses:
+        '200':
+          description: Find roles according to research parameters
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Role'
 components:
   schemas:
     User:
@@ -68,21 +105,23 @@ components:
           format: byte
         firstName:
           type: string
-          pattern: ^[A-Za-z0-9äáàéèëêïíôóöòúûùüÄÁÀÉÈËÊÏÍÔÓÒÚÛÙÜçÇñÑ\'\-]{1,255}$
+          pattern: '^[A-Za-z0-9äáàéèëêïíôóöòúûùüÄÁÀÉÈËÊÏÍÔÓÒÚÛÙÜçÇñÑ\''\-]{1,255}$'
         surname:
           type: string
-          pattern: ^[A-Za-z0-9äáàéèëêïíôóöòúûùüÄÁÀÉÈËÊÏÍÔÓÒÚÛÙÜçÇñÑ\'\-]{1,255}$
+          pattern: '^[A-Za-z0-9äáàéèëêïíôóöòúûùüÄÁÀÉÈËÊÏÍÔÓÒÚÛÙÜçÇñÑ\''\-]{1,255}$'
         phoneNumber:
           type: string
-          pattern: ^[+]?[0-9\-\(\) ]{6,16}$
+          pattern: '^[+]?[0-9\-\(\) ]{6,16}$'
     Role:
       type: object
       properties:
         id:
           type: integer
+          minimum: 1
+          maximum: 99
         code:
           type: string
-          pattern: ^[A-Z]{2}$
+          pattern: '^[A-Z]{2}$'
         name:
           type: string
       required:
